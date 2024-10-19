@@ -1,9 +1,16 @@
 # 1. SteamDB-RecSys This project aims to be an educational project to build
-This is a personal project to design, build, and deploy an offline recommendation system from scratch using game review data from Steam, hosted on [Kaggle](https://www.kaggle.com/datasets/mohamedtarek01234/steam-games-reviews-and-rankings/data) | HuggingFace  mirror.
+This is a personal project to design, build, and deploy an offline recommendation system from scratch using game review data from Steam, hosted on [Kaggle](https://www.kaggle.com/datasets/mohamedtarek01234/steam-games-reviews-and-rankings/data) | [HuggingFace re-upload mirror](https://huggingface.co/datasets/HangenYuu/Steam_Games_Review).
 
 The project was created on 04/10/2024, by a graduating undergraduate student looking to learn more about data engineering, distributed system, and recommendation system.
 
-The details of building the system, as well as the knowledge learnt about industry best practices will be provided in my blog at https://hung.bearblog.dev/. The particular posts are listed below.
+The details of building the project, as well as the knowledge learnt about industry best practices will be provided in my blog at https://hung.bearblog.dev/. The particular posts are listed below.
+
+- Part 1: 
+- Part 2:
+- Part 3:
+- Part 4: 
+
+**Table of Contents**
 
 - [1. SteamDB-RecSys This project aims to be an educational project to build](#1-steamdb-recsys-this-project-aims-to-be-an-educational-project-to-build)
 - [2. Business Requirements](#2-business-requirements)
@@ -15,13 +22,19 @@ The details of building the system, as well as the knowledge learnt about indust
     - [2.2.4. Robustness and Fault Tolerance:](#224-robustness-and-fault-tolerance)
     - [2.2.5. Usability:](#225-usability)
     - [2.2.6. Business Impact:](#226-business-impact)
-- [3. Technical Designs](#3-technical-designs)
-  - [3.1. MB case](#31-mb-case)
-- [4. Technical Stack](#4-technical-stack)
+- [3. Translated Technical Requirements](#3-translated-technical-requirements)
+- [4. Schematic Designs](#4-schematic-designs)
+  - [4.1. General Design](#41-general-design)
+  - [4.2. Specific implementation](#42-specific-implementation)
 - [5. Implementations](#5-implementations)
+  - [5.1. ETL Pipeline](#51-etl-pipeline)
 
 # 2. Business Requirements
-Here's a realistic business requirements possibly handed down by the business team...
+Here's a realistic business requirements possibly handed down by the business team.
+
+<details>
+  <summary>Read more</summary>
+
 ## 2.1. Overall Objective:
 Design and implement a scalable recommendation system for Steam games that enhances user engagement by suggesting relevant games based on player preferences and interactions.
 The system should **efficiently process large datasets** and **provide personalized game recommendations that can improve user satisfaction and increase game discoverability**.
@@ -53,11 +66,36 @@ The system should **efficiently process large datasets** and **provide personali
 - The goal of the system is to improve user engagement and retention by suggesting games that align with user interests.
 - It should drive increased game sales and discovery by highlighting top-ranked games or new releases within the user’s interest scope.
 
-# 3. Technical Designs
-For technical designs, I will do 2 rounds: for the actual dataset at hand (477MB), and for an imaginary dataset 10,000 times bigger (4.77TB). While the 10,000? It's because I want to learn realistically, and TB worth of reviews is more realistic for a large game/music/video distribution or e-commerce platform, like Steam in this case (or Spotify, YouTube, TikTok, Amazon, etc.). Of course, system changes with data and speed requirements, the design I create for the MB case using a single VM is not applicable for the TB case, which is almost surely a distributed system.
-## 3.1. MB case
+</details>
 
+# 3. Translated Technical Requirements
 
-# 4. Technical Stack
+- **Data source & format**: User reviews gathered in operational database e.g., MySQL or PostgreSQL. Since the data is used for ML training, they're better extracted out as flat files such as CSV or Parquet. Hence, I need to build an **ETL pipeline** to transfer the data from operational database to a storage server for my machine learning engineer (MLE) colleagues.
+- **ML System Characteristics**: For offline system, the model will be trained and evaluated offline. Inference will be performed in batch offline at a cadence e.g., daily, then reverse ETL back to operational server to serve the results. Continual training with new data (new game released, new users, new reviews, etc.) will also be performed in batch at a longer cadence e.g., weekly, or when model performance dipped below a threshold.
+- **Serving**: Inference results are produced in batch, offline. To serve the results, a **reverse ETL pipeline** is suitable for transferring inference results back to operational database.
+In summary, the data engineer team will need to build 2[^1] data pipelines: one for operational data to training data, one for inference results to operational data.
+
+# 4. Schematic Designs
+## 4.1. General Design
+![System 2](https://raw.githubusercontent.com/HangenYuu/blog-assets/refs/heads/main/System-2.excalidraw.png)
+
+Components in the system:
+
+1. A source database.
+2. Pipelines for training and inference.
+3. ETL pipeline for creating training data.
+4. Reverse ETL pipeline for serving inference results.
+5. Storage server for training data, training artifacts, and inference results.
+
+## 4.2. Specific implementation
+
+![System 4](https://github.com/HangenYuu/blog-assets/blob/main/System%204.excalidraw.png?raw=true)
+
+- [Mage](https://www.mage.ai/) is used to implement the 2 data pipelines.
+- [PostgreSQL](https://www.postgresql.org/) is used to emulate the source database server.
+- [Google Cloud Storage](https://cloud.google.com/storage) is used as the storage server for all data.
 
 # 5. Implementations
+## 5.1. ETL Pipeline
+Everything lives in the data_pipeline folder.
+The PostgreSQL and Mage are containerized together.
