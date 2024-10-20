@@ -1,4 +1,4 @@
-# 1. SteamDB-RecSys This project aims to be an educational project to build
+# 1. SteamDB-RecSys
 This is a personal project to design, build, and deploy an offline recommendation system from scratch using game review data from Steam, hosted on [Kaggle](https://www.kaggle.com/datasets/mohamedtarek01234/steam-games-reviews-and-rankings/data) | [HuggingFace re-upload mirror](https://huggingface.co/datasets/HangenYuu/Steam_Games_Review).
 
 The project was created on 04/10/2024, by a graduating undergraduate student looking to learn more about data engineering, distributed system, and recommendation system.
@@ -8,11 +8,10 @@ The details of building the project, as well as the knowledge learnt about indus
 - Part 1: 
 - Part 2:
 - Part 3:
-- Part 4: 
 
 **Table of Contents**
 
-- [1. SteamDB-RecSys This project aims to be an educational project to build](#1-steamdb-recsys-this-project-aims-to-be-an-educational-project-to-build)
+- [1. SteamDB-RecSys](#1-steamdb-recsys)
 - [2. Business Requirements](#2-business-requirements)
   - [2.1. Overall Objective:](#21-overall-objective)
   - [2.2. Key Business Requirements:](#22-key-business-requirements)
@@ -98,4 +97,23 @@ Components in the system:
 # 5. Implementations
 ## 5.1. ETL Pipeline
 Everything lives in the data_pipeline folder.
-The PostgreSQL and Mage are containerized together.
+The PostgreSQL and Mage are containerized together with Docker Compose.
+
+<details>
+  <summary>Notes</summary>
+
+Docker Compose also configures a common network for the two containers. In practice, when building the system for data processing, we need to configure the private network to extract the data with ODBC APIs (obviously, you cannot expose your database APIs publicly).
+
+</details>
+
+To run the applications:
+1. Go to the correct working directory.
+```bash
+git clone https://github.com/HangenYuu/Steam-RecSys.git
+cd data_pipeline
+# Build the project
+docker compose build
+# Start the containers
+docker compose up
+```
+2. Navigate to http://localhost:6789/ to view the Mage UI.
