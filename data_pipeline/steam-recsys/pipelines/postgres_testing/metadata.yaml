@@ -2,49 +2,37 @@ blocks:
 - all_upstream_blocks_executed: true
   color: null
   configuration:
-    file_source:
-      path: data_loaders/huggingfacehub_downloader.py
-  downstream_blocks:
-  - games_description_processor
+    data_provider: postgres
+    data_provider_profile: default
+    dbt: {}
+    disable_query_preprocessing: false
+    export_write_policy: append
+    limit: 1
+    use_raw_sql: true
+  downstream_blocks: []
   executor_config: null
   executor_type: local_python
   has_callback: false
-  language: python
-  name: huggingfacehub_downloader
+  language: sql
+  name: test_postgres
   retry_config: null
   status: executed
   timeout: null
   type: data_loader
   upstream_blocks: []
-  uuid: huggingfacehub_downloader
-- all_upstream_blocks_executed: true
-  color: null
-  configuration: {}
-  downstream_blocks: []
-  executor_config: null
-  executor_type: local_python
-  has_callback: false
-  language: python
-  name: games_description_processor
-  retry_config: null
-  status: failed
-  timeout: null
-  type: transformer
-  upstream_blocks:
-  - huggingfacehub_downloader
-  uuid: games_description_processor
+  uuid: test_postgres
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
 conditionals: []
-created_at: '2024-10-08 09:25:50.895444+00:00'
+created_at: '2024-10-20 13:54:29.322064+00:00'
 data_integration: null
 description: null
 executor_config: {}
 executor_count: 1
 executor_type: null
 extensions: {}
-name: source to GCP
+name: postgres testing
 notification_config: {}
 remote_variables_dir: null
 retry_config: {}
@@ -54,6 +42,6 @@ settings:
 spark_config: {}
 tags: []
 type: python
-uuid: source_to_gcp
+uuid: postgres_testing
 variables_dir: /home/src/mage_data/steam-recsys
 widgets: []
