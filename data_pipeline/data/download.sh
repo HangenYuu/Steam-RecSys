@@ -1,0 +1,1 @@
+huggingface-cli download HangenYuu/Steam_Games_Review games_description.csv games_ranking.csv steam_game_reviews.csv --repo-type dataset --local-dir .
