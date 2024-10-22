@@ -29,7 +29,7 @@ The details of building the project, as well as the knowledge learnt about indus
   - [5.1. ETL Pipeline](#51-etl-pipeline)
 
 # 2. Business Requirements
-Here's a realistic business requirements possibly handed down by the business team.
+Here's a realistic business requirements possibly handed down by the business team. I included it as reference only.
 
 <details>
   <summary>Read more</summary>
@@ -107,7 +107,7 @@ Docker Compose also configures a common network for the two containers. In pract
 </details>
 
 To run the applications:
-1. Go to the correct working directory.
+1. Go to the correct working directory and initialize the containers.
 ```bash
 git clone https://github.com/HangenYuu/Steam-RecSys.git
 cd data_pipeline
@@ -117,3 +117,8 @@ docker compose build
 docker compose up
 ```
 2. Navigate to http://localhost:6789/ to view the Mage UI.
+(Picture needed)
+3. Go to `data_pipeline` folder and edit the `io-config.yaml` file. We need to set the correct credentials for GCP and PostgreSQL first. This can also be done in Mage UI. (**Note**: `data_pipeline` folder has been set as the volume for Mage UI, and the permissions allow both end, so edit in either place is fine.)
+4. Go to "Pipelines", you should see 5 pipelines:
+- 
+1. Go to ... and run the 2 cells to check to see if PostgreSQL is
