@@ -121,4 +121,5 @@ docker compose up
 3. Go to `data_pipeline` folder and edit the `io-config.yaml` file. We need to set the correct credentials for GCP and PostgreSQL first. This can also be done in Mage UI. (**Note**: `data_pipeline` folder has been set as the volume for Mage UI, and the permissions allow both end, so edit in either place is fine.)
 4. Go to "Pipelines", you should see 5 pipelines:
 - 
-1. Go to ... and run the 2 cells to check to see if PostgreSQL is
+5. Go to ... and run the 2 cells to check if PostgreSQL is running and accessible.
+(Picture)
