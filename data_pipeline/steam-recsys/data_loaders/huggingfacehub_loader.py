@@ -18,25 +18,16 @@ def load_data(*args, **kwargs) -> list[dict]:
         Anything (e.g. data frame, dictionary, array, int, str, etc.)
     """
     # Specify your data loading logic here
-    print("Downloading data from Hugging Face...")
+    print("Getting data from the folder...")
     repo_id = "HangenYuu/Steam_Games_Review"
-    local_dir = Path("data")
-    filenames = ["games_description", "games_ranking", "steam_game_reviews"]
+    local_dir = Path("data/processed")
+    filenames = kwargs['POSTGRES_TABLES'].split(",")
 
     result = []
 
     for filename in filenames:
-        print(f"Downloading {filename}...")
-        hf_hub_download(
-            repo_id=repo_id,
-            filename=f"{filename}.csv",
-            repo_type="dataset",
-            local_dir=local_dir,
-            token=get_secret_value("HF_TOKEN"),
-        )
-        result.append(dict(name=filename, data=pl.read_csv(local_dir / f"{filename}.csv", infer_schema_length=10000)))
+        result.append(dict(name=filename, data=pl.read_parquet(local_dir / f"{filename}.parquet")))
 
-    print("Data downloaded successfully")
     return [result]
 
 

@@ -21,6 +21,24 @@ blocks:
   type: data_loader
   upstream_blocks: []
   uuid: test_postgres
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    data_provider: postgres
+    data_provider_profile: default
+    export_write_policy: append
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: test_gcs
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_loader
+  upstream_blocks: []
+  uuid: test_gcs
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
@@ -32,7 +50,7 @@ executor_config: {}
 executor_count: 1
 executor_type: null
 extensions: {}
-name: postgres testing
+name: connection_testing
 notification_config: {}
 remote_variables_dir: null
 retry_config: {}
@@ -42,6 +60,6 @@ settings:
 spark_config: {}
 tags: []
 type: python
-uuid: postgres_testing
+uuid: connection_testing
 variables_dir: /home/src/mage_data/steam-recsys
 widgets: []

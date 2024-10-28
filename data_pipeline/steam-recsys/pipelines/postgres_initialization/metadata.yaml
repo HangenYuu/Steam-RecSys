@@ -2,21 +2,24 @@ blocks:
 - all_upstream_blocks_executed: true
   color: null
   configuration:
+    dynamic: true
+    file_path: data_loaders/huggingfacehub_loader.py
     file_source:
-      path: data_loaders/huggingfacehub_downloader.py
-  downstream_blocks: []
+      path: data_loaders/huggingfacehub_loader.py
+  downstream_blocks:
+  - postgres_exporter
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
-  name: huggingfacehub_downloader
+  name: huggingfacehub_loader
   retry_config: null
   status: executed
   timeout: null
   type: data_loader
   upstream_blocks: []
-  uuid: huggingfacehub_downloader
-- all_upstream_blocks_executed: true
+  uuid: huggingfacehub_loader
+- all_upstream_blocks_executed: false
   color: null
   configuration: {}
   downstream_blocks: []
@@ -24,25 +27,26 @@ blocks:
   executor_type: local_python
   has_callback: false
   language: python
-  name: games_description_processor
+  name: postgres_exporter
   retry_config: null
-  status: failed
+  status: executed
   timeout: null
-  type: transformer
-  upstream_blocks: []
-  uuid: games_description_processor
+  type: data_exporter
+  upstream_blocks:
+  - huggingfacehub_loader
+  uuid: postgres_exporter
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
 conditionals: []
-created_at: '2024-10-08 09:25:50.895444+00:00'
+created_at: '2024-10-20 00:42:00.020776+00:00'
 data_integration: null
 description: null
 executor_config: {}
 executor_count: 1
 executor_type: null
 extensions: {}
-name: source_to_gcp_games_description
+name: postgres_initialization
 notification_config: {}
 remote_variables_dir: null
 retry_config: {}
@@ -52,6 +56,9 @@ settings:
 spark_config: {}
 tags: []
 type: python
-uuid: source_to_gcp
+uuid: postgres_initialization
+variables:
+  POSTGRES_SCHEMA: recsys
+  POSTGRES_TABLES: games_reviews,developer_dimension,publisher_dimension,games_ranking,games_description,genre_dimension,users_mapping,rank_dimension,publisher_mapping,developer_mapping,genre_mapping
 variables_dir: /home/src/mage_data/steam-recsys
 widgets: []

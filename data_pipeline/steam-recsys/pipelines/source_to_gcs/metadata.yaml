@@ -3,22 +3,21 @@ blocks:
   color: null
   configuration:
     dynamic: true
-    file_source:
-      path: data_loaders/huggingfacehub_downloader.py
   downstream_blocks:
-  - postgres_exporter
+  - dynamic_export_to_gcs_csv
+  - dynamic_export_to_gcs_parquet
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
-  name: huggingfacehub_downloader
+  name: Load data from PostgreSQL
   retry_config: null
-  status: executed
+  status: updated
   timeout: null
   type: data_loader
   upstream_blocks: []
-  uuid: huggingfacehub_downloader
-- all_upstream_blocks_executed: true
+  uuid: load_data_from_postgresql
+- all_upstream_blocks_executed: false
   color: null
   configuration: {}
   downstream_blocks: []
@@ -26,26 +25,42 @@ blocks:
   executor_type: local_python
   has_callback: false
   language: python
-  name: postgres_exporter
+  name: dynamic_export_to_GCS_parquet
   retry_config: null
-  status: executed
+  status: not_executed
   timeout: null
   type: data_exporter
   upstream_blocks:
-  - huggingfacehub_downloader
-  uuid: postgres_exporter
+  - load_data_from_postgresql
+  uuid: dynamic_export_to_gcs_parquet
+- all_upstream_blocks_executed: false
+  color: null
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: dynamic_export_to_GCS_CSV
+  retry_config: null
+  status: not_executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - load_data_from_postgresql
+  uuid: dynamic_export_to_gcs_csv
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
 conditionals: []
-created_at: '2024-10-20 00:42:00.020776+00:00'
+created_at: '2024-10-08 09:25:50.895444+00:00'
 data_integration: null
 description: null
 executor_config: {}
 executor_count: 1
 executor_type: null
 extensions: {}
-name: API_to_postgres
+name: source_to_gcs
 notification_config: {}
 remote_variables_dir: null
 retry_config: {}
@@ -55,8 +70,9 @@ settings:
 spark_config: {}
 tags: []
 type: python
-uuid: api_to_postgres
+uuid: source_to_gcs
 variables:
+  GENERIC_TABLES: developer_dimension,publisher_dimension,games_ranking,genre_dimension,users_mapping,rank_dimension,publisher_mapping,developer_mapping,genre_mapping
   POSTGRES_SCHEMA: recsys
 variables_dir: /home/src/mage_data/steam-recsys
 widgets: []
