@@ -10,6 +10,13 @@ Accompany this project is a series blog posts consolidating the knowledge I lear
 - Part 3: Scale Up Training & Serving: Offline - 
 - Part 4: Scale Up Training & Serving: Online - (*In Progress*)
 
+**Tasks**
+- [ ] Clean the data and upload to HF.
+- [ ] Create the ETL pipeline in Mage.
+- [ ] Create the notebook to run ML training in Colab.
+- [ ] Create the reverse ETL pipeline in Mage.
+
+
 **Table of Contents**
 
 - [1. SteamDB-RecSys](#1-steamdb-recsys)
