@@ -166,3 +166,4 @@ cython_debug/
 mage_data
 personal-gcp.json
 *.csv
+data_pipeline/data/processed
