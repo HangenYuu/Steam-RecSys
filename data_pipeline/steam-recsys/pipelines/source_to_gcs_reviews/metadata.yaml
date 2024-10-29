@@ -1,0 +1,101 @@
+blocks:
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    data_provider: postgres
+    data_provider_profile: default
+    dbt: {}
+    disable_query_preprocessing: false
+    export_write_policy: append
+    file_path: data_loaders/load_data_from_postgresql_generic.sql
+    file_source:
+      path: data_loaders/load_data_from_postgresql_generic.sql
+    limit: 1000
+    use_raw_sql: true
+  downstream_blocks:
+  - upload_reviews_to_gcs_csv
+  - upload_reviews_to_gcs_parquet
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: sql
+  name: load_data_from_postgresql_generic
+  retry_config: null
+  status: failed
+  timeout: null
+  type: data_loader
+  upstream_blocks: []
+  uuid: load_data_from_postgresql_generic
+- all_upstream_blocks_executed: false
+  color: null
+  configuration:
+    data_provider: postgres
+    data_provider_profile: default
+    export_write_policy: append
+    file_path: data_exporters/upload_reviews_to_gcs_parquet.py
+    file_source:
+      path: data_exporters/upload_reviews_to_gcs_parquet.py
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: upload_reviews_to_gcs_parquet
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - load_data_from_postgresql_generic
+  uuid: upload_reviews_to_gcs_parquet
+- all_upstream_blocks_executed: false
+  color: null
+  configuration:
+    data_provider: postgres
+    data_provider_profile: default
+    export_write_policy: append
+    file_path: data_exporters/upload_reviews_to_gcs_csv.py
+    file_source:
+      path: data_exporters/upload_reviews_to_gcs_csv.py
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: upload_reviews_to_GCS_csv
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - load_data_from_postgresql_generic
+  uuid: upload_reviews_to_gcs_csv
+cache_block_output_in_memory: false
+callbacks: []
+concurrency_config: {}
+conditionals: []
+created_at: '2024-10-29 09:13:17.198150+00:00'
+data_integration: null
+description: null
+executor_config: {}
+executor_count: 1
+executor_type: null
+extensions: {}
+name: source_to_gcs_reviews
+notification_config: {}
+remote_variables_dir: null
+retry_config: {}
+run_pipeline_in_one_process: false
+settings:
+  triggers: null
+spark_config: {}
+tags: []
+type: python
+uuid: source_to_gcs_reviews
+variables:
+  CONFORMED_BUCKET: conformed_games_data
+  RAW_BUCKET: raw_games_data
+  SCHEMA_NAME: recsys
+  TABLE_NAME: games_reviews
+variables_dir: /home/src/mage_data/steam-recsys
+widgets: []
