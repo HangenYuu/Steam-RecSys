@@ -27,7 +27,7 @@ blocks:
   language: python
   name: dynamic_export_to_GCS_parquet
   retry_config: null
-  status: failed
+  status: executed
   timeout: null
   type: data_exporter
   upstream_blocks:
@@ -74,7 +74,6 @@ uuid: source_to_gcs_direct
 variables:
   CONFORMED_BUCKET: conformed_games_data
   GENERIC_TABLES: developer_dimension,publisher_dimension,games_ranking,genre_dimension,users_mapping,rank_dimension,publisher_mapping,developer_mapping,genre_mapping
-  GOOGLE_APPLICATION_CREDENTIALS: home/src/solid-acrobat-440004-g5-903ac2d18476.json
   POSTGRES_SCHEMA: recsys
   RAW_BUCKET: raw_games_data
 variables_dir: /home/src/mage_data/steam-recsys
