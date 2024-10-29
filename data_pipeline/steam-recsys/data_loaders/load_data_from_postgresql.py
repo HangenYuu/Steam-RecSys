@@ -7,9 +7,10 @@ if 'data_loader' not in globals():
 if 'test' not in globals():
     from mage_ai.data_preparation.decorators import test
 from datetime import date
+import pandas as pd
 
 @data_loader
-def load_data_from_postgres(*args, **kwargs):
+def load_data_from_postgres(*args, **kwargs) -> list[list[dict]]:
     """
     Template for loading data from a PostgreSQL database.
     Specify your configuration settings in 'io_config.yaml'.
