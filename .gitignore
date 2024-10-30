@@ -167,3 +167,4 @@ mage_data
 personal-gcp.json
 *.csv
 data_pipeline/data/processed
+data_pipeline/data/results

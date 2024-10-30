@@ -41,13 +41,9 @@ default:
   GOOGLE_LOCATION: US # Optional
   # MongoDB
   # Specify either the connection string or the (host, password, user, port) to connect to MongoDB.
-  MONGODB_CONNECTION_STRING: "mongodb://{username}:{password}@{host}:{port}/"
-  MONGODB_HOST: host
-  MONGODB_PORT: 27017
-  MONGODB_USER: user
-  MONGODB_PASSWORD: password
-  MONGODB_DATABASE: database
-  MONGODB_COLLECTION: collection
+  MONGODB_CONNECTION_STRING: "mongodb+srv://{{ env_var('MONGODB_USER') }}:{{ env_var('MONGODB_PASSWORD') }}@{{ env_var('MONGODB_HOST') }}/"
+  MONGODB_DATABASE: sample_mflix
+  MONGODB_COLLECTION: rec_results
   # MSSQL
   MSSQL_DATABASE: database
   MSSQL_SCHEMA: schema
