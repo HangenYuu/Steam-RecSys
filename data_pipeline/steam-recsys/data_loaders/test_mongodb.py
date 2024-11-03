@@ -13,11 +13,12 @@ def load_from_mongodb(*args, **kwargs):
     config_path = path.join(get_repo_path(), 'io_config.yaml')
     config_profile = 'default'
 
-    query = {'title': 'The Perils of Pauline'}
+    query = {}
     
     result = MongoDB.with_config(ConfigFileLoader(config_path, config_profile)).load(
         query=query,
-        collection='embedded_movies',
+        collection='recsys',
+        limit=5,
     )
     return result
 

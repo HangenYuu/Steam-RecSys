@@ -24,8 +24,7 @@ def transform(df: DataFrame, *args, **kwargs) -> DataFrame:
     df["recommendations"] = df["recommendations"].apply(
         lambda x: [item["game_id"] for item in x]
     )
-    data = df.to_dict(orient="records")
-    return data
+    return df
 
 
 @test
