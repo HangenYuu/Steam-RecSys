@@ -3,19 +3,36 @@ blocks:
   color: null
   configuration: {}
   downstream_blocks:
-  - mongodb_generic_exporter
+  - remove_probability
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
   name: gcs_generic_data_loader
   retry_config: null
-  status: updated
+  status: executed
   timeout: null
   type: data_loader
   upstream_blocks: []
   uuid: gcs_generic_data_loader
-- all_upstream_blocks_executed: false
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - mongodb_generic_exporter
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: remove_probability
+  retry_config: null
+  status: updated
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - gcs_generic_data_loader
+  uuid: remove_probability
+- all_upstream_blocks_executed: true
   color: null
   configuration: {}
   downstream_blocks: []
@@ -25,11 +42,11 @@ blocks:
   language: python
   name: mongodb_generic_exporter
   retry_config: null
-  status: not_executed
+  status: updated
   timeout: null
   type: data_exporter
   upstream_blocks:
-  - gcs_generic_data_loader
+  - remove_probability
   uuid: mongodb_generic_exporter
 cache_block_output_in_memory: false
 callbacks: []
@@ -55,6 +72,7 @@ type: python
 uuid: gcs_to_mongodb
 variables:
   BUCKET_NAME: inference_games_results
+  COLLECTION_NAME: recsys
   OBJECT_KEY: user_recommendations.parquet
 variables_dir: /home/src/mage_data/steam-recsys
 widgets: []

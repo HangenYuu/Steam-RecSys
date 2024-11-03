@@ -1,7 +1,5 @@
 from os import path
 
-from pandas import DataFrame
-
 from mage_ai.settings.repo import get_repo_path
 from mage_ai.io.config import ConfigFileLoader
 from mage_ai.io.mongodb import MongoDB
@@ -11,11 +9,13 @@ if 'data_exporter' not in globals():
 
 
 @data_exporter
-def export_data_to_mongodb(df: DataFrame, **kwargs) -> None:
+def export_data_to_mongodb(data, **kwargs) -> None:
     config_path = path.join(get_repo_path(), 'io_config.yaml')
     config_profile = 'default'
 
+    data = df.to_dict(orient="records")
+
     MongoDB.with_config(ConfigFileLoader(config_path, config_profile)).export(
-        df,
-        collection='collection_name',
+        data,
+        collection=kwargs['COLLECTION_NAME'],
     )
