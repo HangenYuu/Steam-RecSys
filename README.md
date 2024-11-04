@@ -10,13 +10,6 @@ Accompany this project is a series blog posts consolidating the knowledge I lear
 - Part 3: Scale Up Training & Serving: Offline - 
 - Part 4: Scale Up Training & Serving: Online - (*In Progress*)
 
-**Tasks**
-- [ ] Clean the data and upload to HF.
-- [ ] Create the ETL pipeline in Mage.
-- [ ] Create the notebook to run ML training in Colab.
-- [ ] Create the reverse ETL pipeline in Mage.
-
-
 **Table of Contents**
 
 - [1. SteamDB-RecSys](#1-steamdb-recsys)
@@ -40,7 +33,7 @@ Accompany this project is a series blog posts consolidating the knowledge I lear
 # 2. Technologies
 - Python 3.10.10.
 - [GitHub Codespace](https://github.com/codespaces/) and [Lightning AI Studio](https://lightning.ai/studios) for development environments.
-- [Polars](https://pola.rs/) for data processing.
+- [Polars](https://pola.rs/) and [Pandas](https://pandas.pydata.org/) for data processing.
 - [Mage](https://www.mage.ai/) for data pipeline definition & orchestration.
 - [PostgreSQL](https://www.postgresql.org/) for SQL database.
 - [Docker](https://www.docker.com/) for containerization.
@@ -52,19 +45,35 @@ Accompany this project is a series blog posts consolidating the knowledge I lear
 ```bash
 git clone https://github.com/HangenYuu/Steam-RecSys.git
 cd data_pipeline
-# Build the project
-docker compose build
-# Start the containers
-docker compose up
+# Build and start the containers
+docker compose up -d --build
 ```
 2. Navigate to http://localhost:6789/ to view the Mage UI.
 (Picture needed)
-3. Edit the `io-config.yaml` file in the IDE or the file in Mage UI. We need to set the correct credentials for GCP and PostgreSQL.
-4. Go to "Pipelines" in Mage UI, you should see 5 pipelines:
+3. Edit the `io-config.yaml` file in the IDE or the file in Mage UI. We need to set the correct credentials for GCP, PostgreSQL, and MongoDB.
+```yaml
+# Google
+GOOGLE_SERVICE_ACC_KEY_FILEPATH: "/home/src/solid-acrobat-440004-g5-903ac2d18476.json"
+GOOGLE_LOCATION: US # Optional
+# MongoDB
+# Specify the connection string or the (host, password, user, port) to connect to MongoDB.
+MONGODB_CONNECTION_STRING: "mongodb+srv://{{ env_var('MONGODB_USER') }}:{{ env_var('MONGODB_PASSWORD') }}@{{ env_var('MONGODB_HOST') }}/"
+MONGODB_DATABASE: sample_mflix
+MONGODB_COLLECTION: rec_results
+# PostgresSQL
+POSTGRES_CONNECT_TIMEOUT: 10
+POSTGRES_DBNAME: {{ env_var('POSTGRES_DBNAME') }}
+POSTGRES_SCHEMA: {{ env_var('POSTGRES_SCHEMA') }}
+POSTGRES_USER: {{ env_var('POSTGRES_USER') }}
+POSTGRES_PASSWORD: {{ env_var('POSTGRES_PASSWORD') }}
+POSTGRES_HOST: {{ env_var('POSTGRES_HOST') }}
+POSTGRES_PORT: {{ env_var('POSTGRES_PORT') }}
+```
+4. Go to "Pipelines" in Mage UI, you should see 6 pipelines:
 - 
-5. Go to ... and run the 2 cells to check for PostgreSQL & GCS connections.
+1. Go to ... and run the 2 cells to check for PostgreSQL & GCS connections.
 (Picture)
-6. Go to ... and run the pipeline to ingest the data to the PostgreSQL database. **Note**: The PostgreSQL container has no volume so this should be run again if the containers are run again after `docker compose down`.
+1. Go to ... and run the pipeline to ingest the data to the PostgreSQL database. **Note**: The PostgreSQL container has no volume so this should be run again if the containers are run again after `docker compose down`.
 
 ## 3.1. Ingestion Pipeline
 
