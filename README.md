@@ -13,21 +13,12 @@ Accompany this project is a series blog posts consolidating the knowledge I lear
 
 - [1. SteamDB-RecSys](#1-steamdb-recsys)
 - [2. Technologies](#2-technologies)
-- [3. Running the Project](#3-running-the-project)
-  - [3.1. Ingestion Pipeline](#31-ingestion-pipeline)
-- [4. Business Requirements](#4-business-requirements)
-  - [4.1. Overall Objective:](#41-overall-objective)
-  - [4.2. Key Business Requirements:](#42-key-business-requirements)
-    - [4.2.1. Personalized Recommendations:](#421-personalized-recommendations)
-    - [4.2.2. Scalability:](#422-scalability)
-    - [4.2.3. Real-time and Batch Processing:](#423-real-time-and-batch-processing)
-    - [4.2.4. Robustness and Fault Tolerance:](#424-robustness-and-fault-tolerance)
-    - [4.2.5. Usability:](#425-usability)
-    - [4.2.6. Business Impact:](#426-business-impact)
-- [5. Translated Technical Requirements](#5-translated-technical-requirements)
-- [6. Schematic Designs](#6-schematic-designs)
-  - [6.1. General Design](#61-general-design)
-  - [6.2. Specific implementation](#62-specific-implementation)
+- [3. Run the project](#3-run-the-project)
+  - [3.1. Prepare the cloud credentials.](#31-prepare-the-cloud-credentials)
+  - [3.2. Run the containers](#32-run-the-containers)
+- [4. Project Development Details](#4-project-development-details)
+- [5. Schematic Design](#5-schematic-design)
+- [6. Blog posts on storage and compute components extending this project](#6-blog-posts-on-storage-and-compute-components-extending-this-project)
 
 # 2. Technologies
 - Python 3.10.10.
@@ -91,6 +82,35 @@ POSTGRES_PORT: {{ env_var('POSTGRES_PORT') }}
 
 7. Go to `postgres_initialization` and run the pipeline to ingest the data to the PostgreSQL database.
 
-8. Go to the three `source_to_gcs_...` pipelines and run the pipeline to ingest the data from PostgreSQL to GCS.
+8. Use the notebook `notebooks\3. postgres_tables_check.ipynb` or `pgcli` to check if the data are all ingested to the PostgreSQL database.
 
-9. Go to the `gcs_to_mongodb` pipeline and run the pipeline to ingest the data from GCS to MongoDB.
+9.  Go to the three `source_to_gcs_...` pipelines and run the pipeline to ingest the data from PostgreSQL to GCS. Double check for the data in GCS.
+
+![raw](assets/raw.png)
+
+![processed](assets/conformed.png)
+
+10. Go to the `gcs_to_mongodb` pipeline and run the pipeline to ingest the data from GCS to MongoDB. Double check for the data in MongoDB.
+
+![MongoDB](assets/MongoDB_Cloud.png)
+
+# 4. Project Development Details
+Cover in the 1st blog post: https://hung.bearblog.dev/recsysdev/
+
+# 5. Schematic Design
+
+![BDA](https://github.com/HangenYuu/blog-assets/blob/main/Big%20Data%20Pipeline.excalidraw.png?raw=true)
+
+Based on this diagram, we need 2 main components:
+1. **Low-cost high-volume storage** ([S3](https://aws.amazon.com/s3/), [ADLS](https://azure.microsoft.com/en-us/products/storage/data-lake-storage)) for data lake.
+2. **Compute engine** ([Spark](https://spark.apache.org/), [Trino](https://trino.io/)) for batch processing.
+
+There are other components such as
+1. **Data connectors** ([dlt](https://dlthub.com/docs/intro)) or **data integration platform** ([Airbyte](https://airbyte.com/)) to connect and load the data from sources.
+2. **Orchestration tools** ([Metaflow](https://metaflow.org/), [Vertex AI Pipelines](https://cloud.google.com/vertex-ai/docs/pipelines/introduction)) to orchestrate data and ML training pipelines and the underlying hardware.
+3. **Low-latency key-value storage** ([ScyllaDB](https://www.scylladb.com/), [DynamoDB](https://aws.amazon.com/dynamodb/)) and **cache** ([Redis](https://redis.io/)) for serving the inference results.
+
+# 6. Blog posts on storage and compute components extending this project
+
+- Part 2: Recommendation System Storage and Compute (Offline Training) - https://hung.bearblog.dev/recsysoff/
+- Part 3: Recommendation System Storage and Compute (Online Inference) - https://hung.bearblog.dev/recsyson/
